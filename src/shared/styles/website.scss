@@ -64,17 +64,6 @@ body {
     background-color: #211018;
 }
 
-::-moz-selection,
-::selection {
-    text-shadow: none;
-    background: #fcfcfc;
-    background: rgba(255, 255, 255, 0.2);
-}
-img::selection,
-img::-moz-selection {
-    background: transparent;
-}
-
 h1, h2, h3, h4, h5, h6 {
     margin: 0 0 35px;
     font-family: 'Muli', sans-serif;
