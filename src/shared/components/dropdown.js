@@ -23,7 +23,7 @@ export default class Dropdown extends DropdownBase {
 
     constructor() {
         super();
-        this.icon_classes = "fa fa-bars";
+        this.icon_classes = "fa fa-ellipsis-v";
         this.items = [];
         this.id = u.getUniqueId();
     }
