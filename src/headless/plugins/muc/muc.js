@@ -2369,6 +2369,32 @@ class MUC extends ModelWithVCard(ModelWithMessages(ColorAwareModel(ChatBoxBase))
             return log.error(/** @type {Error} */ (attrs_or_error).message);
         }
 
+				if (attrs.body) {
+					const linkMatches = attrs.body?.match(/^(((https|http)?:\/\/)|(www\.)?)([A-Za-z0-9-_]+)\.([A-Za-z0-9]+)\S*[^\s.;,(){}<>]/);
+					if (linkMatches?.length > 0) {
+						const linkMatch = linkMatches[0];
+						const result = await fetch(`/api/embed?url=${encodeURIComponent(linkMatch)}`, {
+							method: 'GET',
+							headers: {
+								'Accept': 'application/json',
+								'Content-Type': 'application/json',
+							},
+						});
+						const json = await result.json();
+						if (json?.status === 200 && json?.url) {
+							attrs.ogp_metadata = [
+								{
+									'og:type': 'website',
+									'og:url': json.url,
+									...(json.title && { 'og:title': json.title, 'og:site_name': json.title }),
+									...(json.thumbnails?.[0] && { 'og:image': json.thumbnails[0] }),
+									...(json.description && { 'og:description': json.description })
+								}
+							];
+						}
+					}
+				}
+
         const attrs = /** @type {MUCMessageAttributes} */ (attrs_or_error);
         if (attrs.type === "error" && !(await this.shouldShowErrorMessage(attrs))) {
             return;

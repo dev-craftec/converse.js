@@ -29,7 +29,7 @@ class BaseModal extends CustomElement {
     constructor (options) {
         super();
         this.model = null;
-        this.className = u.isTestEnv() ? 'modal' : 'modal fade';
+			  this.className = 'modal';
         this.tabIndex = -1;
         this.ariaHidden = 'true';
 
@@ -50,7 +50,7 @@ class BaseModal extends CustomElement {
     get modal () {
         if (!this.#modal) {
             this.#modal = new Modal(this, {
-                backdrop: u.isTestEnv() ? false : true,
+                backdrop: false,
                 keyboard: true
             });
         }
