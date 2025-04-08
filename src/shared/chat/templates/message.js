@@ -110,7 +110,7 @@ export default (el) => {
                     if (el.model.get('hide_url_previews') === true) {
                         return '';
                     }
-                    if (!shouldRenderMediaFromURL(m['og:image'], 'image')) {
+                    if (m['og:image'] && !shouldRenderMediaFromURL(m['og:image'], 'image')) {
                         return '';
                     }
                     return html`<converse-message-unfurl

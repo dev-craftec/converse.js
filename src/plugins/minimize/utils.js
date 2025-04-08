@@ -122,7 +122,7 @@ export function addMinimizeButtonToChat (view, buttons) {
         'handler': ev => minimize(ev, view.model),
         'i18n_text': __('Minimize'),
         'i18n_title': __('Minimize this chat'),
-        'icon_class': "fa-minus",
+        'icon_class': "fa-times",
         'name': 'minimize',
         'standalone': _converse.api.settings.get("view_mode") === 'overlayed'
     }
@@ -137,7 +137,7 @@ export function addMinimizeButtonToMUC (view, buttons) {
         'handler': ev => minimize(ev, view.model),
         'i18n_text': __('Minimize'),
         'i18n_title': __('Minimize this groupchat'),
-        'icon_class': "fa-minus",
+        'icon_class': "fa-times",
         'name': 'minimize',
         'standalone': _converse.api.settings.get("view_mode") === 'overlayed'
     }

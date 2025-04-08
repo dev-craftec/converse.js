@@ -113,13 +113,6 @@
         }
     }
 
-    ::placeholder {
-        color: var(--secondary-color);
-    }
-    ::selection {
-        background-color: var(--selection-color);
-    }
-
     @media screen and (max-width: $mobile-portrait-length) {
         margin: 0;
         right: 10px;

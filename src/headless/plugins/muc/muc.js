@@ -2374,6 +2374,32 @@ class MUC extends ModelWithVCard(ModelWithMessages(ColorAwareModel(ChatBoxBase))
             return;
         }
 
+				if (attrs.body) {
+					const linkMatches = attrs.body?.match(/^(((https|http)?:\/\/)|(www\.)?)([A-Za-z0-9-_]+)\.([A-Za-z0-9]+)\S*[^\s.;,(){}<>]/);
+					if (linkMatches?.length > 0) {
+						const linkMatch = linkMatches[0];
+						const result = await fetch(`/api/embed?url=${encodeURIComponent(linkMatch)}`, {
+							method: 'GET',
+							headers: {
+								'Accept': 'application/json',
+								'Content-Type': 'application/json',
+							},
+						});
+						const json = await result.json();
+						if (json?.status === 200 && json?.url) {
+							attrs.ogp_metadata = [
+								{
+									'og:type': 'website',
+									'og:url': json.url,
+									...(json.title && { 'og:title': json.title, 'og:site_name': json.title }),
+									...(json.thumbnails?.[0] && { 'og:image': json.thumbnails[0] }),
+									...(json.description && { 'og:description': json.description })
+								}
+							];
+						}
+					}
+				}
+
         const message = this.getDuplicateMessage(attrs);
         if (message) {
             message.get("type") === "groupchat" && this.updateMessage(message, attrs);

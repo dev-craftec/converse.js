@@ -47,9 +47,6 @@
                 color: var(--text-color);
                 background-color: var(--background-color);
             }
-            &::placeholder {
-                color: var(--secondary-color);
-            }
         }
 
         .form-control--labeled {

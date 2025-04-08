@@ -17,21 +17,20 @@ export default (el) => {
     return html`
         <div class="chatbox-title ${ show_subject ? '' :  "chatbox-title--no-desc"}">
 
-            <a data-room-jid="${el.model.get('jid')}"
-               title="${__('Show more information on this groupchat')}"
-               @click=${(ev) => el.showRoomDetailsModal(ev)}>
-
-                <converse-avatar
-                    .model=${el.model}
-                    class="avatar align-self-center"
-                    name="${el.model.getDisplayName()}"
-                    nonce=${el.model.vcard?.get('vcard_updated')}
-                    height="40" width="40"></converse-avatar>
-            </a>
-
             <div class="chatbox-title--row">
                 ${ (!_converse.api.settings.get("singleton")) ?
                         html`<converse-controlbox-navback jid="${o.jid}"></converse-controlbox-navback>` : '' }
+								<a data-room-jid="${el.model.get('jid')}"
+									 title="${__('Show more information on this groupchat')}"
+									 @click=${(ev) => el.showRoomDetailsModal(ev)}>
+
+										<converse-avatar
+												.model=${el.model}
+												class="avatar align-self-center"
+												name="${el.model.getDisplayName()}"
+												nonce=${el.model.vcard?.get('vcard_updated')}
+												height="40" width="40"></converse-avatar>
+								</a>
                 <div class="chatbox-title__text"
                      role="heading" aria-level="2"
                      title="${ (api.settings.get('locked_muc_domain') !== 'hidden') ? o.jid : '' }">
