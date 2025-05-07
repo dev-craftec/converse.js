@@ -527,7 +527,7 @@ describe("Chatboxes", function () {
 
                     const { api } = _converse;
                     await mock.waitUntilDiscoConfirmed(_converse, 'montague.lit', [], ['vcard-temp']);
-                    await u.waitUntil(() => _converse.xmppstatus.vcard.get('fullname'));
+                    await u.waitUntil(() => _converse.xmppstatus.vcard?.get('fullname'));
                     await mock.waitForRoster(_converse, 'current');
                     // Send a message from a different resource
                     const recipient_jid = mock.cur_names[5].replace(/ /g,'.').toLowerCase() + '@montague.lit';
@@ -651,7 +651,7 @@ describe("Chatboxes", function () {
 
                     const { api } = _converse;
                     await mock.waitUntilDiscoConfirmed(_converse, 'montague.lit', [], ['vcard-temp']);
-                    await u.waitUntil(() => _converse.xmppstatus.vcard.get('fullname'));
+                    await u.waitUntil(() => _converse.xmppstatus.vcard?.get('fullname'));
                     await mock.waitForRoster(_converse, 'current');
                     // Send a message from a different resource
                     const recipient_jid = mock.cur_names[5].replace(/ /g,'.').toLowerCase() + '@montague.lit';
@@ -939,7 +939,10 @@ describe("Chatboxes", function () {
                 key: "Enter",
             });
             await u.waitUntil(() => _converse.api.confirm.calls.count() === 1);
-            expect(_converse.api.confirm).toHaveBeenCalledWith('Are you sure you want to clear the messages from this conversation?');
+            expect(_converse.api.confirm).toHaveBeenCalledWith(
+                'Confirm',
+                'Are you sure you want to clear the messages from this conversation?'
+            );
             await u.waitUntil(() => view.model.messages.length === 0);
             await u.waitUntil(() => !view.querySelectorAll('.chat-msg__body').length);
         }));

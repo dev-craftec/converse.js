@@ -7,7 +7,7 @@ declare class RosterContacts extends Collection {
     /**
      * @param {import('../../shared/chatbox').default} model
      */
-    onChatBoxClosed(model: import("../../shared/chatbox").default): void;
+    removeUnsavedContact(model: import("../../shared/chatbox").default): void;
     onConnected(): void;
     /**
      * Register a handler for roster IQ "set" stanzas, which update
@@ -61,7 +61,7 @@ declare class RosterContacts extends Collection {
     /**
      * Handle roster updates from the XMPP server.
      * See: https://xmpp.org/rfcs/rfc6121.html#roster-syntax-actions-push
-     * @param { Element } iq - The IQ stanza received from the XMPP server.
+     * @param {Element} iq - The IQ stanza received from the XMPP server.
      */
     onRosterPush(iq: Element): void;
     rosterVersioningSupported(): any;

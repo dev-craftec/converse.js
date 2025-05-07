@@ -22,18 +22,17 @@ class RosterContacts extends Collection {
         this.state = new Model({ id, 'collapsed_groups': [] });
         initStorage(this.state, id);
         this.state.fetch();
-
         api.listen.on('chatBoxClosed',
             /** @param {import('../../shared/chatbox').default} model */
-            (model) => this.onChatBoxClosed(model));
+            (model) => this.removeUnsavedContact(model));
     }
 
     /**
      * @param {import('../../shared/chatbox').default} model
      */
-    onChatBoxClosed(model) {
+    removeUnsavedContact(model) {
         const contact = this.get(model.get('jid'));
-        if (contact?.get('subscription') === 'none') {
+        if (contact && contact.get('subscription') === undefined) {
             contact.destroy();
         }
     }
@@ -191,11 +190,11 @@ class RosterContacts extends Collection {
                     nickname: name,
                     groups: [],
                     requesting: false,
-                    subscription: subscribe ? 'to' : 'none',
+                    subscription: persist ? 'none' : undefined,
                 },
                 ...attributes,
             },
-            { 'sort': false }
+            { sort: false }
         );
 
         if (subscribe) contact.subscribe(message);
@@ -234,7 +233,7 @@ class RosterContacts extends Collection {
     /**
      * Handle roster updates from the XMPP server.
      * See: https://xmpp.org/rfcs/rfc6121.html#roster-syntax-actions-push
-     * @param { Element } iq - The IQ stanza received from the XMPP server.
+     * @param {Element} iq - The IQ stanza received from the XMPP server.
      */
     onRosterPush (iq) {
         const id = iq.getAttribute('id');
@@ -265,6 +264,7 @@ class RosterContacts extends Collection {
             log.warn('Received a roster push stanza without an "item" element.');
             return;
         }
+
         this.updateContact(items.pop());
         /**
          * When the roster receives a push event from server (i.e. new entry in your contacts roster).

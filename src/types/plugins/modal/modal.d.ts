@@ -13,6 +13,7 @@ declare class BaseModal extends CustomElement {
      */
     constructor(options: any);
     model: any;
+    onKeyDown: (ev: KeyboardEvent) => void;
     initialized: Promise<any> & {
         isResolved: boolean;
         isPending: boolean;
@@ -20,6 +21,7 @@ declare class BaseModal extends CustomElement {
         resolve: (value: any) => void;
         reject: (reason?: any) => void;
     };
+    connectedCallback(): void;
     get modal(): Modal;
     initialize(): void;
     /**
@@ -51,6 +53,6 @@ declare class BaseModal extends CustomElement {
     #private;
 }
 import { CustomElement } from 'shared/components/element.js';
-import Modal from "bootstrap/js/src/modal.js";
+import Modal from 'bootstrap/js/src/modal.js';
 import { Model } from '@converse/skeletor';
 //# sourceMappingURL=modal.d.ts.map

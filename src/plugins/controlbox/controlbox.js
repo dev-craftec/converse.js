@@ -46,7 +46,10 @@ class ControlBoxView extends CustomElement {
     }
 
     render() {
-        return this.model && !this.model.get('closed') ? tplControlbox(this) : '';
+        if (api.settings.get('view_mode') === 'overlayed') {
+            return this.model && !this.model.get('closed') ? tplControlbox(this) : '';
+        }
+        return tplControlbox(this);
     }
 
     close(ev) {
@@ -61,7 +64,7 @@ class ControlBoxView extends CustomElement {
         if (api.settings.get('sticky_controlbox') || api.settings.get('view_mode') !== 'overlayed') {
             return;
         }
-        u.safeSave(this.model, { 'closed': true });
+        u.safeSave(this.model, { closed: true });
         api.trigger('controlBoxClosed', this);
         return this;
     }

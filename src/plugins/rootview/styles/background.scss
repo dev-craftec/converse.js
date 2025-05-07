@@ -5,6 +5,7 @@
 @import 'bootstrap/scss/utilities';
 
 converse-bg {
+    position: absolute;
     display: inline-block;
     height: 100vh;
     width: 100vw;
@@ -64,13 +65,15 @@ converse-bg {
             font-size: 6em;
             @include make-col(10);
         }
+        converse-logo {
+            height: 2em;
+            display: flex;
+            margin-top: 0.4em;
+        }
         padding: 0;
         padding-top: 15%;
         display: flex;
         justify-content: center;
         margin: auto;
-        svg {
-            margin-top: 0.4em;
-        }
     }
 }

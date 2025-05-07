@@ -7,8 +7,7 @@ export default class ChatBottomPanel extends CustomElement {
     model: any;
     connectedCallback(): Promise<void>;
     initialize(): Promise<void>;
-    render(): "" | import("lit-html").TemplateResult<1>;
-    sendButtonClicked(ev: any): void;
+    render(): import("lit-html").TemplateResult<1> | "";
     viewUnreadMessages(ev: any): void;
     onDragOver(ev: any): void;
     clearMessages(ev: any): void;
