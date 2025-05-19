@@ -32,7 +32,7 @@ export default class RosterContactView extends ObservableElement {
         this.listenTo(this.model, 'highlight', () => this.requestUpdate());
         this.listenTo(this.model, 'vcard:add', () => this.requestUpdate());
         this.listenTo(this.model, 'vcard:change', () => this.requestUpdate());
-        this.listenTo(this.model, 'presenceChanged', () => this.requestUpdate());
+        this.listenTo(this.model, 'presence:change', () => this.requestUpdate());
     }
 
     render() {
@@ -73,6 +73,19 @@ export default class RosterContactView extends ObservableElement {
     /**
      * @param {MouseEvent} ev
      */
+    async showUserDetailsModal(ev) {
+        ev?.preventDefault?.();
+        ev.preventDefault();
+        if (this.model instanceof _converse.exports.Profile) {
+            api.modal.show('converse-profile-modal', { model: this.model }, ev);
+        } else {
+            api.modal.show('converse-user-details-modal', { model: this.model }, ev);
+        }
+    }
+
+    /**
+     * @param {MouseEvent} ev
+     */
     async blockContact(ev) {
         ev?.preventDefault?.();
         await blockContact(this.model);
@@ -100,11 +113,11 @@ export default class RosterContactView extends ObservableElement {
 
         const result = await api.confirm(
             __('Decline contact request'),
-            [__('Are you sure you want to decline this contact request?')],
+            [__('Are you sure you want to decline this contact request from %1$s?', this.model.getDisplayName())],
             blocking_supported
                 ? [
                       {
-                          label: __('Block this user from sending you further messages'),
+                          label: __('Also block this user from sending you further messages'),
                           name: 'block',
                           type: 'checkbox',
                       },

@@ -26,13 +26,20 @@ converse.plugins.add('converse-roster', {
 
     initialize () {
         api.settings.extend({
-            show_self_in_roster: true,
             allow_contact_requests: true,
             auto_subscribe: false,
+            enable_roster_versioning: true,
+            show_self_in_roster: true,
             synchronize_availability: true
         });
 
-        api.promises.add(['cachedRoster', 'roster', 'rosterContactsFetched', 'rosterInitialized']);
+        api.promises.add([
+            'cachedRoster',
+            'roster',
+            'rosterContactsFetched',
+            'rosterInitialized',
+            'presencesInitialized',
+        ]);
 
         // API methods only available to plugins
         Object.assign(_converse.api, roster_api);

@@ -144,7 +144,8 @@ describe("Presence subscriptions", function () {
                 <presence to="contact@example.org" type="subscribe" xmlns="jabber:client">
                     <nick xmlns="http://jabber.org/protocol/nick">Romeo</nick>
                     <priority>0</priority>
-                    <c hash="sha-1" node="https://conversejs.org" ver="TfHz9vOOfqIG0Z9lW5CuPaWGnrQ=" xmlns="http://jabber.org/protocol/caps"/>
+                    <x xmlns="${Strophe.NS.VCARD_UPDATE}"></x>
+                    <c hash="sha-1" node="https://conversejs.org" ver="qgxN8hmrdSa2/4/7PUoM9bPFN2s=" xmlns="http://jabber.org/protocol/caps"/>
                 </presence>
             `);
 
@@ -175,7 +176,7 @@ describe("Presence subscriptions", function () {
             }, 600);
 
             let header = sizzle('a:contains("My Buddies")', rosterview).pop();
-            let contacts = header.parentElement.querySelectorAll('li');
+            let contacts = header.parentElement.querySelectorAll('li .open-chat');
             expect(contacts.length).toBe(1);
             expect(u.isVisible(contacts[0])).toBe(true);
             sent_stanza = ""; // Reset
@@ -225,7 +226,7 @@ describe("Presence subscriptions", function () {
             header = sizzle('a:contains("My contacts")', rosterview);
             expect(header.length).toBe(1);
             expect(u.isVisible(header[0])).toBeTruthy();
-            contacts = header[0].parentNode.querySelectorAll('li');
+            contacts = header[0].parentNode.querySelectorAll('li.current-xmpp-contact');
             expect(contacts.length).toBe(1);
             // Check that it has the right classes and text
             expect(u.hasClass('to', contacts[0])).toBeTruthy();
@@ -234,7 +235,7 @@ describe("Presence subscriptions", function () {
 
             await u.waitUntil(() => contacts[0].querySelector('.contact-name')?.textContent.trim() === 'Nicky');
 
-            expect(contact.presence.get('show')).toBe('offline');
+            expect(contact.presence.getStatus()).toBe('offline');
 
             /*  <presence
              *      from='contact@example.org/resource'
@@ -243,7 +244,7 @@ describe("Presence subscriptions", function () {
             stanza = $pres({'to': _converse.bare_jid, 'from': 'contact@example.org/resource'});
             _converse.api.connection.get()._dataRecv(mock.createRequest(stanza));
             // Now the contact should also be online.
-            expect(contact.presence.get('show')).toBe('online');
+            expect(contact.presence.getStatus()).toBe('online');
 
             /* Section 8.3.  Creating a Mutual Subscription
              *

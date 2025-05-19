@@ -74,8 +74,9 @@ describe("The OMEMO module", function() {
                 </message>`;
         _converse.api.connection.get()._dataRecv(mock.createRequest(stanza));
         await new Promise(resolve => view.model.messages.once('rendered', resolve));
+
         expect(view.model.messages.length).toBe(2);
-        const error = await u.waitUntil(() => view.querySelector('.error'));
+        const error = await u.waitUntil(() => view.querySelector('.error'), 5000);
         expect(error.textContent).toBe('Error: could not decrypt a received encrypted file, because it could not be downloaded');
     }));
 

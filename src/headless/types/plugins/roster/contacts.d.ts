@@ -64,14 +64,13 @@ declare class RosterContacts extends Collection {
      * @param {Element} iq - The IQ stanza received from the XMPP server.
      */
     onRosterPush(iq: Element): void;
-    rosterVersioningSupported(): any;
+    shouldUseRosterVersioning(): any;
     /**
-     * Fetch the roster from the XMPP server
+     * Fetches the roster from the XMPP server and updates the local state
      * @emits _converse#roster
-     * @param {boolean} [full=false] - Whether to fetch the full roster or just the changes.
-     * @returns {promise}
+     * @returns {Promise}
      */
-    fetchFromServer(full?: boolean): Promise<any>;
+    fetchFromServer(): Promise<any>;
     /**
      * Update or create RosterContact models based on the given `item` XML
      * node received in the resulting IQ stanza from the server.
@@ -87,15 +86,15 @@ declare class RosterContacts extends Collection {
      */
     handleIncomingSubscription(presence: Element): void;
     /**
-     * @param {Element} presence
+     * @param {Element} stanza
      */
-    handleOwnPresence(presence: Element): void;
+    handleOwnPresence(stanza: Element): void;
     /**
      * @param {Element} presence
      */
     presenceHandler(presence: Element): true | void;
 }
-import { Collection } from "@converse/skeletor";
+import { Collection } from '@converse/skeletor';
 import RosterContact from './contact.js';
-import { Model } from "@converse/skeletor";
+import { Model } from '@converse/skeletor';
 //# sourceMappingURL=contacts.d.ts.map

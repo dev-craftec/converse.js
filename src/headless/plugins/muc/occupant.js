@@ -36,7 +36,8 @@ class MUCOccupant extends ModelWithVCard(ModelWithMessages(ColorAwareModel(Model
     defaults() {
         return {
             hats: [],
-            show: "offline",
+            presence: 'offline',
+            show: undefined,
             states: [],
             hidden: true,
             num_unread: 0,
@@ -173,7 +174,7 @@ class MUCOccupant extends ModelWithVCard(ModelWithMessages(ColorAwareModel(Model
             {
                 body,
                 from: own_occupant.get("from"),
-                fullname: _converse.state.xmppstatus.get("fullname"),
+                fullname: _converse.state.profile.get("fullname"),
                 id: origin_id,
                 jid: this.get("jid"),
                 message: body,
@@ -208,6 +209,13 @@ class MUCOccupant extends ModelWithVCard(ModelWithMessages(ColorAwareModel(Model
         const stanza = await super.createMessageStanza(message);
         stanza.cnode(stx`<x xmlns="${Strophe.NS.MUC}#user"/>`).root();
         return stanza;
+    }
+
+    /**
+     * @param {import('../../shared/message').default} message
+     */
+    isChatMessage(message) {
+        return message.get('type') === this.get('message_type');
     }
 }
 

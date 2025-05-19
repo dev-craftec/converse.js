@@ -44,8 +44,9 @@ describe("Groupchats", function () {
         it("sends the user status when joining and when it changes",
                 mock.initConverse(['statusInitialized'], {}, async function (_converse) {
 
+            const { profile } = _converse.state;
             const muc_jid = 'coven@chat.shakespeare.lit';
-            _converse.xmppstatus.set('status', 'away');
+            profile.set('show', 'away');
 
             const sent_stanzas = _converse.api.connection.get().sent_stanzas;
             while (sent_stanzas.length) sent_stanzas.pop();
@@ -57,38 +58,38 @@ describe("Groupchats", function () {
                 <presence from="${_converse.jid}" id="${pres.getAttribute('id')}" to="${muc_jid}/romeo" xmlns="jabber:client">
                     <x xmlns="http://jabber.org/protocol/muc"><history maxstanzas="0"/></x>
                     <show>away</show>
-                    <c hash="sha-1" node="https://conversejs.org" ver="TfHz9vOOfqIG0Z9lW5CuPaWGnrQ=" xmlns="http://jabber.org/protocol/caps"/>
+                    <c hash="sha-1" node="https://conversejs.org" ver="qgxN8hmrdSa2/4/7PUoM9bPFN2s=" xmlns="http://jabber.org/protocol/caps"/>
                 </presence>`);
 
             expect(muc.getOwnOccupant().get('show')).toBe('away');
 
             while (sent_stanzas.length) sent_stanzas.pop();
 
-            _converse.xmppstatus.set('status', 'xa');
+            profile.set('show', 'xa');
             pres = await u.waitUntil(() => sent_stanzas.filter(s => s.nodeName === 'presence' && s.getAttribute('to') === `${muc_jid}/romeo`).pop());
 
-            expect(Strophe.serialize(pres)).toBe(
-                `<presence to="${muc_jid}/romeo" xmlns="jabber:client">`+
-                    `<show>xa</show>`+
-                    `<priority>0</priority>`+
-                    `<c hash="sha-1" node="https://conversejs.org" ver="TfHz9vOOfqIG0Z9lW5CuPaWGnrQ=" xmlns="http://jabber.org/protocol/caps"/>`+
-                `</presence>`)
+            expect(pres).toEqualStanza(stx`
+                <presence to="${muc_jid}/romeo" xmlns="jabber:client">
+                    <show>xa</show>
+                    <priority>0</priority>
+                    <x xmlns="vcard-temp:x:update"/>
+                    <c hash="sha-1" node="https://conversejs.org" ver="qgxN8hmrdSa2/4/7PUoM9bPFN2s=" xmlns="http://jabber.org/protocol/caps"/>
+                </presence>`)
 
-            _converse.xmppstatus.set('status', 'dnd');
-            _converse.xmppstatus.set('status_message', 'Do not disturb');
+            profile.set({ show: 'dnd', status_message: 'Do not disturb' });
             while (sent_stanzas.length) sent_stanzas.pop();
 
             const muc2_jid = 'cave@chat.shakespeare.lit';
             const muc2 = await mock.openAndEnterMUC(_converse, muc2_jid, 'romeo');
 
             pres = await u.waitUntil(() => sent_stanzas.filter(s => s.nodeName === 'presence').pop());
-            expect(Strophe.serialize(pres)).toBe(
-                `<presence from="${_converse.jid}" id="${pres.getAttribute('id')}" to="${muc2_jid}/romeo" xmlns="jabber:client">`+
-                    `<x xmlns="http://jabber.org/protocol/muc"><history maxstanzas="0"/></x>`+
-                    `<show>dnd</show>`+
-                    `<status>Do not disturb</status>`+
-                    `<c hash="sha-1" node="https://conversejs.org" ver="TfHz9vOOfqIG0Z9lW5CuPaWGnrQ=" xmlns="http://jabber.org/protocol/caps"/>`+
-                `</presence>`);
+            expect(pres).toEqualStanza(stx`
+                <presence from="${_converse.jid}" id="${pres.getAttribute('id')}" to="${muc2_jid}/romeo" xmlns="jabber:client">
+                    <x xmlns="http://jabber.org/protocol/muc"><history maxstanzas="0"/></x>
+                    <show>dnd</show>
+                    <status>Do not disturb</status>
+                    <c hash="sha-1" node="https://conversejs.org" ver="qgxN8hmrdSa2/4/7PUoM9bPFN2s=" xmlns="http://jabber.org/protocol/caps"/>
+                </presence>`);
 
             expect(muc2.getOwnOccupant().get('show')).toBe('dnd');
 
@@ -143,7 +144,7 @@ describe("Groupchats", function () {
             expect(Strophe.serialize(pres)).toBe(
                 `<presence from="${_converse.jid}" id="${pres.getAttribute('id')}" to="coven@chat.shakespeare.lit/romeo" xmlns="jabber:client">`+
                     `<x xmlns="http://jabber.org/protocol/muc"><history maxstanzas="0"/></x>`+
-                    `<c hash="sha-1" node="https://conversejs.org" ver="TfHz9vOOfqIG0Z9lW5CuPaWGnrQ=" xmlns="http://jabber.org/protocol/caps"/>`+
+                    `<c hash="sha-1" node="https://conversejs.org" ver="qgxN8hmrdSa2/4/7PUoM9bPFN2s=" xmlns="http://jabber.org/protocol/caps"/>`+
                 `</presence>`);
         }));
     });

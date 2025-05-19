@@ -805,7 +805,7 @@ describe("Groupchats", function () {
                 "some1, newgirl and nomorenicks have entered the groupchat\nnewguy and insider have left the groupchat");
 
             expect(view.model.occupants.length).toBe(5);
-            expect(view.model.occupants.findWhere({'jid': 'insider@montague.lit'}).get('show')).toBe('offline');
+            expect(view.model.occupants.findWhere({'jid': 'insider@montague.lit'}).get('presence')).toBe('offline');
 
             // New girl leaves
             presence = $pres({
@@ -1852,7 +1852,7 @@ describe("Groupchats", function () {
             expect(view.model.features.get('unsecured')).toBe(false);
             await u.waitUntil(() => view.querySelector('.chatbox-title__text').textContent.trim() === 'Room');
 
-            modal.querySelector('.btn-close').click();
+            modal.querySelector('.btn[aria-label="Close"]').click();
             view.querySelector('.configure-chatroom-button').click();
 
             const IQs = _converse.api.connection.get().IQ_stanzas;

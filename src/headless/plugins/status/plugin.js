@@ -1,4 +1,4 @@
-import XMPPStatus from './status.js';
+import Profile from './profile.js';
 import _converse from '../../shared/_converse.js';
 import api from '../../shared/api/index.js';
 import converse from '../../shared/api/public.js';
@@ -26,13 +26,19 @@ converse.plugins.add('converse-status', {
             auto_away: 0, // Seconds after which user status is set to 'away'
             auto_xa: 0, // Seconds after which user status is set to 'xa'
             csi_waiting_time: 0, // Support for XEP-0352. Seconds before client is considered idle and CSI is sent out.
-            default_state: 'online',
             idle_presence_timeout: 300, // Seconds after which an idle presence is sent
             priority: 0,
         });
         api.promises.add(['statusInitialized']);
 
-        const exports = { XMPPStatus, onUserActivity, onEverySecond, sendCSI, registerIntervalHandler };
+        const exports = {
+            XMPPStatus: Profile, // Deprecated
+            Profile,
+            onUserActivity,
+            onEverySecond,
+            sendCSI,
+            registerIntervalHandler
+        };
         Object.assign(_converse, exports); // Deprecated
         Object.assign(_converse.exports, exports);
         Object.assign(_converse.api.user, status_api);
@@ -45,10 +51,10 @@ converse.plugins.add('converse-status', {
         api.listen.on('beforeTearDown', tearDown);
 
         api.listen.on('clearSession', () => {
-            if (shouldClearCache(_converse) && _converse.state.xmppstatus) {
-                _converse.state.xmppstatus.destroy();
-                delete _converse.state.xmppstatus;
-                Object.assign(_converse, { xmppstatus: undefined }); // XXX DEPRECATED
+            if (shouldClearCache(_converse) && _converse.state.profile) {
+                _converse.state.profile.destroy();
+                delete _converse.state.profile;
+                Object.assign(_converse, { profile: undefined }); // XXX DEPRECATED
                 api.promises.add(['statusInitialized']);
             }
         });

@@ -108,8 +108,9 @@ declare const MUC_base: {
         clearMessages(): Promise<void>;
         editEarlierMessage(): void;
         editLaterMessage(): any;
-        getOldestMessage(): any;
-        getMostRecentMessage(): any;
+        isChatMessage(_message: import("../../shared/message.js").default<any>): boolean;
+        getOldestMessage(): import("../../shared/message.js").default<any>;
+        getMostRecentMessage(): import("../../shared/message.js").default<any>;
         getMessageReferencedByError(attrs: object): any;
         findDanglingRetraction(attrs: object): import("../../shared/message.js").default<any> | null;
         getDuplicateMessage(attrs: object): import("../../shared/message.js").default<any>;
@@ -377,7 +378,7 @@ declare class MUC extends MUC_base {
     /**
      * @param {MUCOccupant} occupant
      */
-    onOccupantShowChanged(occupant: import("./occupant.js").default): void;
+    onOccupantPresenceChanged(occupant: import("./occupant.js").default): void;
     onRoomEntered(): Promise<void>;
     onConnectionStatusChanged(): Promise<void>;
     getMessagesCollection(): any;
@@ -484,6 +485,10 @@ declare class MUC extends MUC_base {
     }): Promise<void>;
     canModerateMessages(): any;
     canPostMessages(): boolean;
+    /**
+     * @param {import('../../shared/message').default} message
+     */
+    isChatMessage(message: import("../../shared/message.js").default<any>): boolean;
     /**
      * Return an array of unique nicknames based on all occupants and messages in this MUC.
      * @returns {String[]}
@@ -763,12 +768,11 @@ declare class MUC extends MUC_base {
     isJoined(): Promise<boolean>;
     /**
      * Sends a status update presence (i.e. based on the `<show>` element)
-     * @param {String} type
-     * @param {String} [status] - An optional status message
+     * @param {import("../status/types").presence_attrs} attrs
      * @param {Element[]|Builder[]|Element|Builder} [child_nodes]
      *  Nodes(s) to be added as child nodes of the `presence` XML element.
      */
-    sendStatusPresence(type: string, status?: string, child_nodes?: Element[] | import("strophe.js").Builder[] | Element | import("strophe.js").Builder): Promise<void>;
+    sendStatusPresence(attrs: import("../status/types").presence_attrs, child_nodes?: Element[] | import("strophe.js").Builder[] | Element | import("strophe.js").Builder): Promise<void>;
     /**
      * Check whether we're still joined and re-join if not
      */
@@ -933,8 +937,8 @@ declare class MUC extends MUC_base {
     incrementUnreadMsgsCounter(message: import("../../shared/message.js").default<any>): void;
     clearUnreadMsgCounter(): Promise<void>;
 }
-import { Model } from "@converse/skeletor";
-import ChatBoxBase from "../../shared/chatbox";
-import MUCSession from "./session";
-import { TimeoutError } from "../../shared/errors.js";
+import { Model } from '@converse/skeletor';
+import ChatBoxBase from '../../shared/chatbox';
+import MUCSession from './session';
+import { TimeoutError } from '../../shared/errors.js';
 //# sourceMappingURL=muc.d.ts.map

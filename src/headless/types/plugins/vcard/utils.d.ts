@@ -1,9 +1,4 @@
 /**
- * @param {Element} iq
- * @returns {Promise<import("./types").VCardResult>}
- */
-export function onVCardData(iq: Element): Promise<import("./types").VCardResult>;
-/**
  * @param {"get"|"set"|"result"} type
  * @param {string} jid
  * @param {Element} [vcard_el]
@@ -29,14 +24,20 @@ export function clearVCardsSession(): void;
 /**
  * @param {string} jid
  */
-export function fetchVCard(jid: string): Promise<import("./types").VCardResult | {
+export function fetchVCard(jid: string): Promise<import("./types.js").VCardResult | {
     jid: string;
     stanza: any;
     error: any;
     vcard_error: string;
 }>;
+export function unregisterPresenceHandler(): void;
+export function registerPresenceHandler(): void;
+/**
+ * @param {import('strophe.js').Builder} stanza
+ */
+export function updatePresence(stanza: import("strophe.js").Builder): import("strophe.js").Builder;
 export type MUCMessage = import("../../plugins/muc/message").default;
-export type XMPPStatus = import("../../plugins/status/status").default;
+export type Profile = import("../../plugins/status/profile").default;
 export type VCards = import("../../plugins/vcard/vcards").default;
 export type VCard = import("../../plugins/vcard/vcard").default;
 export type ModelWithContact = typeof import("../../shared/model-with-contact.js").default;

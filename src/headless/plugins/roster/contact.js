@@ -26,7 +26,7 @@ class RosterContact extends ModelWithVCard(ColorAwareModel(Model)) {
         this.lazy_load_vcard = true;
         super.initialize();
         this.initialized = getOpenPromise();
-        this.setPresence();
+        await this.setPresence();
         const { jid } = attrs;
         this.set({
             ...attrs,
@@ -43,7 +43,9 @@ class RosterContact extends ModelWithVCard(ColorAwareModel(Model)) {
          * @example _converse.api.listen.on('contactPresenceChanged', contact => { ... });
          */
         this.listenTo(this.presence, 'change:show', () => api.trigger('contactPresenceChanged', this));
-        this.listenTo(this.presence, 'change:show', () => this.trigger('presenceChanged'));
+        this.listenTo(this.presence, 'change:show', () => this.trigger('presence:change'));
+        this.listenTo(this.presence, 'change:presence', () => api.trigger('contactPresenceChanged', this));
+        this.listenTo(this.presence, 'change:presence', () => this.trigger('presence:change'));
         /**
          * Synchronous event which provides a hook for further initializing a RosterContact
          * @event _converse#rosterContactInitialized
@@ -53,14 +55,15 @@ class RosterContact extends ModelWithVCard(ColorAwareModel(Model)) {
         this.initialized.resolve();
     }
 
-    setPresence () {
+    async setPresence () {
         const jid = this.get('jid');
+        await api.waitUntil('presencesInitialized');
         const { presences } = _converse.state;
-        this.presence = presences.findWhere(jid) || presences.create({ jid });
+        this.presence = presences.get(jid) || presences.create({ jid });
     }
 
     getStatus () {
-        return this.presence.get('show') || 'offline';
+        return this.presence?.getStatus() || 'offline';
     }
 
     openChat () {
@@ -81,7 +84,11 @@ class RosterContact extends ModelWithVCard(ColorAwareModel(Model)) {
      *      reason for the subscription request.
      */
     subscribe (message) {
-        api.user.presence.send('subscribe', this.get('jid'), message);
+        api.user.presence.send({
+            type: 'subscribe',
+            to: this.get('jid'),
+            status: message
+        });
         this.save('ask', "subscribe"); // ask === 'subscribe' Means we have asked to subscribe to them.
         return this;
     }

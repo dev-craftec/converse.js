@@ -795,16 +795,6 @@ JIDs with other domains are still allowed but need to be provided in full.
 To specify only one domain and disallow other domains, see the `locked_domain`_
 option.
 
-default_state
--------------
-
-* Default: ``'online'``
-
-The default chat status that the user wil have. If you for example set this to
-``'chat'``, then Converse will send out a presence stanza with ``"show"``
-set to ``'chat'`` as soon as you've been logged in.
-
-
 discover_connection_methods
 ---------------------------
 
@@ -929,6 +919,16 @@ The app servers are specified with the `push_app_servers`_ option.
 .. note::
     Registering a push app server against a MUC domain is not (yet) standardized
     and this feature should be considered experimental.
+
+
+enable_roster_versioning
+------------------------
+
+* Default: ``true``
+
+Determines support for `roster versioning <https://xmpp.org/rfcs/rfc6121.html#roster-versioning>`_.
+If set to ``false``, the full roster will always be fetched.
+
 
 enable_smacks
 -------------
@@ -2106,6 +2106,16 @@ everywhere.
 
 This warning isn't applicable to all deployments of Converse and can therefore
 be turned off by setting this config variable to ``false``.
+
+
+show_self_in_roster
+-------------------
+
+* Default: ``true``
+
+If true, you'll see yourself in your list of contacts (aka the "roster") and
+can open a chat with yourself.
+
 
 show_send_button
 ----------------

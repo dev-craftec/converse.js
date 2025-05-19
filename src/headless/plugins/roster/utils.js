@@ -66,14 +66,18 @@ async function populateRoster(ignore_cache = false) {
     } catch (reason) {
         log.error(reason);
     } finally {
-        connection.send_initial_presence && api.user.presence.send();
+        if (connection.send_initial_presence) {
+            api.user.presence.send();
+            _converse.state.profile.save({ presence: 'online' });
+
+        }
     }
 }
 
 function updateUnreadCounter(chatbox) {
     const roster = /** @type {RosterContacts} */ (_converse.state.roster);
     const contact = roster?.get(chatbox.get('jid'));
-    contact?.save({ 'num_unread': chatbox.get('num_unread') });
+    contact?.save({ num_unread: chatbox.get('num_unread') });
 }
 
 let presence_ref;
@@ -82,6 +86,7 @@ function registerPresenceHandler() {
     unregisterPresenceHandler();
     const connection = api.connection.get();
     presence_ref = connection.addHandler(
+        /** @param {Element} presence */
         (presence) => {
             const roster = /** @type {RosterContacts} */ (_converse.state.roster);
             roster.presenceHandler(presence);
@@ -163,9 +168,8 @@ export async function onStatusInitialized(reconnecting) {
         const id = `converse.presences-${bare_jid}`;
 
         initStorage(presences, id, 'session');
-        // We might be continuing an existing session, so we fetch
-        // cached presence data.
-        presences.fetch();
+        // We might be continuing an existing session, so we fetch cached presence data.
+        await new Promise((r) => presences.fetch({ success: r, error: r }));
     }
     /**
      * Triggered once the _converse.Presences collection has been
@@ -174,7 +178,7 @@ export async function onStatusInitialized(reconnecting) {
      * Converse having reconnected.
      * @event _converse#presencesInitialized
      * @type {boolean}
-     * @example _converse.api.listen.on('presencesInitialized', reconnecting => { ... });
+     * @example _converse.api.listen.on('presencesInitialized', (reconnecting) => { ... });
      */
     api.trigger('presencesInitialized', reconnecting);
 }
