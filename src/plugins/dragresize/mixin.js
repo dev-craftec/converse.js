@@ -3,7 +3,7 @@ import { api } from '@converse/headless';
 import { applyDragResistance, getResizingDirection } from './utils.js';
 
 const DragResizableMixin = {
-    initDragResize () {
+    initDragResize() {
         const debouncedSetDimensions = debounce(() => this.setDimensions());
         window.addEventListener('resize', debouncedSetDimensions);
         this.listenTo(this.model, 'destroy', () => window.removeEventListener('resize', debouncedSetDimensions));
@@ -35,15 +35,29 @@ const DragResizableMixin = {
         return this;
     },
 
-    resizeChatBox (ev) {
+    /**
+     * @param {MouseEvent} ev
+     */
+    resizeChatBox(ev) {
         let diff;
         const direction = getResizingDirection();
         if (direction.indexOf('top') === 0) {
+            const margin = api.settings.get('dragresize_top_margin') ?? 0;
+            const max_height = window.innerHeight - margin;
             diff = ev.pageY - this.prev_pageY;
+
             if (diff) {
+
+                const new_height = this.height - diff;
+                console.log('------------');
+                console.log(`window.innerHeight: ${window.innerHeight}`);
+                console.log(`max_height: ${max_height}`);
+                console.log(`new_height: ${new_height}`);
+                console.log(`diff: ${diff}`);
+
                 this.height =
                     this.height - diff > (this.model.get('min_height') || 0)
-                        ? this.height - diff
+                        ? (new_height <= max_height ? new_height : max_height)
                         : this.model.get('min_height');
                 this.prev_pageY = ev.pageY;
                 this.setChatBoxHeight(this.height);
@@ -62,7 +76,7 @@ const DragResizableMixin = {
         }
     },
 
-    setDimensions () {
+    setDimensions() {
         // Make sure the chat box has the right height and width.
         this.adjustToViewport();
         this.setChatBoxWidth(this.model.get('width'));
@@ -71,32 +85,29 @@ const DragResizableMixin = {
         }
     },
 
-    setChatBoxHeight (height) {
-        if (height) {
-            height = applyDragResistance(height, this.model.get('default_height')) + 'px';
-        } else {
-            height = '';
-        }
+    /**
+     * @param {number} height
+     */
+    setChatBoxHeight(height) {
         const flyout_el = this.querySelector('.box-flyout');
         if (flyout_el !== null) {
-            flyout_el.style.height = height;
+            flyout_el.style.height = height ? applyDragResistance(height, this.model.get('default_height')) + 'px' : '';
         }
     },
 
-    setChatBoxWidth (width) {
-        if (width) {
-            width = applyDragResistance(width, this.model.get('default_width')) + 'px';
-        } else {
-            width = '';
-        }
-        this.style.width = width;
+    /**
+     * @param {number} width
+     */
+    setChatBoxWidth(width) {
+        const style_width = width ? applyDragResistance(width, this.model.get('default_width')) + 'px' : '';
+        this.style.width = style_width;
         const flyout_el = this.querySelector('.box-flyout');
         if (flyout_el !== null) {
-            flyout_el.style.width = width;
+            flyout_el.style.width = style_width;
         }
     },
 
-    adjustToViewport () {
+    adjustToViewport() {
         /* Event handler called when viewport gets resized. We remove
          * custom width/height from chat boxes.
          */
@@ -110,7 +121,7 @@ const DragResizableMixin = {
         } else if (viewport_height <= this.model.get('height')) {
             this.model.set('height', undefined);
         }
-    }
+    },
 };
 
 export default DragResizableMixin;
