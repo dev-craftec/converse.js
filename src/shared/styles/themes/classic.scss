@@ -24,7 +24,7 @@
     // --------------
     --foreground-color: #666;
     --background-color: #efefef;
-    --background-color-rgb: 102, 102, 102;
+    --background-color-rgb: 239, 239, 239;
 
     --chat-rgb: var(--green-rgb);
     --muc-rgb: var(--orange-rgb);
@@ -51,7 +51,7 @@
 
     --converse-body-bg: var(--background-color);
     --converse-body-color: var(--foreground-color) !important;
-    --converse-highlight-color: var(--red);
+    --converse-highlight-color: var(--blue);
     .navbar-nav {
         --converse-nav-link-color: var(--link-color) !important;
     }

@@ -63,12 +63,12 @@ export async function declineContactRequest(contact) {
             api.blocklist.add(contact.get('jid'));
             api.toast.show('declined-and-blocked', {
                 type: 'success',
-                body: __('Contact request declined and user blocked')
+                body: __('Contact request declined and user blocked'),
             });
         } else {
             api.toast.show('request-declined', {
                 type: 'success',
-                body: __('Contact request declined')
+                body: __('Contact request declined'),
             });
         }
         contact.destroy();
@@ -368,5 +368,27 @@ export async function getNamesAutoCompleteList(query) {
     return json.map((i) => ({
         label: `${i.fullname} <${i.jid}>`,
         value: `${i.fullname} <${i.jid}>`,
+        ...i, // Return rest of the JSON as well, could be useful to 3rd party plugin
     }));
 }
+
+Object.assign(u, {
+    rosterview: {
+        removeContact,
+        declineContactRequest,
+        blockContact,
+        unblockContact,
+        highlightRosterItem,
+        toggleGroup,
+        getFilterCriteria,
+        isContactFiltered,
+        shouldShowContact,
+        shouldShowGroup,
+        populateContactsMap,
+        contactsComparator,
+        groupsComparator,
+        getGroupsAutoCompleteList,
+        getJIDsAutoCompleteList,
+        getNamesAutoCompleteList,
+    },
+});

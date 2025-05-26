@@ -3,7 +3,7 @@ import Modal from 'bootstrap/js/src/modal.js';
 import { getOpenPromise } from '@converse/openpromise';
 import { Model } from '@converse/skeletor';
 import { CustomElement } from 'shared/components/element.js';
-import { u } from '@converse/headless';
+import { api, u } from '@converse/headless';
 import { modal_close_button } from './templates/buttons.js';
 import tplModal from './templates/modal.js';
 
@@ -50,6 +50,7 @@ class BaseModal extends CustomElement {
         });
         this.addEventListener('hidden.bs.modal', () => {
             this.ariaHidden = 'true';
+            api.modal.remove(this.nodeName.toLowerCase());
         });
     }
 
@@ -126,12 +127,15 @@ class BaseModal extends CustomElement {
     /**
      * @param {string} message
      * @param {'primary'|'secondary'|'danger'} type
+     * @param {boolean} [is_ephemeral=true]
      */
-    alert(message, type = 'primary') {
+    alert(message, type = 'primary', is_ephemeral = true) {
         this.model.set('alert', { message, type });
-        setTimeout(() => {
-            this.model.set('alert', undefined);
-        }, 5000);
+        if (is_ephemeral) {
+            setTimeout(() => {
+                this.model.set('alert', undefined);
+            }, 5000);
+        }
     }
 
     async show() {
