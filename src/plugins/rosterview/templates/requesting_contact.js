@@ -12,7 +12,7 @@ export default (el) => {
     const display_name = el.model.getDisplayName();
     const i18n_accept = __('Click to accept the contact request from %1$s (XMPP address: %2$s)', display_name, jid);
     const i18n_decline = __('Click to decline the contact request from %1$s (XMPP address: %2$s)', display_name, jid);
-    const i18n_chat = __('Click to chat with %1$s (XMPP address: %2$s)', display_name, jid);
+    const i18n_chat = `Click to chat with ${display_name}`;
     const btns = [
         html`<a
                 class="dropdown-item accept-xmpp-request"

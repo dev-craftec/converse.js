@@ -31,7 +31,7 @@ export default (el) => {
     const num_unread = getUnreadMsgsDisplay(el.model);
     const display_name = el.model.getDisplayName();
     const jid = el.model.get('jid');
-    const i18n_chat = __('Click to chat with %1$s (XMPP address: %2$s)', display_name, jid);
+		const i18n_chat = `Click to chat with ${display_name}`;
     const btns = [
        tplDetailsButton(el),
        tplAddContactButton(el),
