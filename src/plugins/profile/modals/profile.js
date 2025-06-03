@@ -79,7 +79,7 @@ export default class ProfileModal extends BaseModal {
      */
     renderModalFooter() {
         return html`<div class="modal-footer d-flex justify-content-between">
-            ${modal_close_button} ${tplLogoutButton(this)}
+            ${modal_close_button}
         </div>`;
     }
 
