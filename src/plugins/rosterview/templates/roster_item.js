@@ -64,7 +64,7 @@ export default (el) => {
     const jid = el.model.get('jid');
     const i18n_chat = is_self
         ? __('Click to chat with yourself')
-        : __('Click to chat with %1$s (XMPP address: %2$s)', display_name, jid);
+        : `Click to chat with ${display_name}`;
 
     const btns = [
         tplDetailsButton(el),

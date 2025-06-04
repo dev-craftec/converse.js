@@ -100,6 +100,6 @@ export default (el) => {
             </form>
         `;
     } else {
-        return html`<p>${__('No blocked XMPP addresses')}</p>`;
+        return html`<p>No blocked users</p>`;
     }
 };

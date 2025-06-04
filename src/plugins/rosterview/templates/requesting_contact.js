@@ -10,8 +10,8 @@ export default (el) => {
     const num_unread = getUnreadMsgsDisplay(el.model);
     const jid = el.model.get('jid');
     const display_name = el.model.getDisplayName();
-    const i18n_accept = __('Click to accept the contact request from %1$s (XMPP address: %2$s)', display_name, jid);
-    const i18n_decline = __('Click to decline the contact request from %1$s (XMPP address: %2$s)', display_name, jid);
+    const i18n_accept = `Click to accept the contact request from ${display_name}`;
+    const i18n_decline = `Click to decline the contact request from ${display_name}`;
     const i18n_chat = `Click to chat with ${display_name}`;
     const btns = [
         html`<a
