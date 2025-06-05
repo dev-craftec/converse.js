@@ -175,7 +175,7 @@ class ChatBox extends ModelWithVCard(ModelWithMessages(ModelWithContact(ColorAwa
         if (this.vcard) {
             return this.vcard.getDisplayName();
         } else {
-            return this.get('jid');
+            return this.get('nickname') ?? this.get('jid');
         }
     }
 
