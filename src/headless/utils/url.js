@@ -73,6 +73,7 @@ export function isURLWithImageExtension(url) {
  * @param {string|URL} url
  */
 export function isGIFURL(url) {
+    if (!url) return false;
     return checkFileTypes([".gif"], url);
 }
 
