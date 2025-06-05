@@ -37,7 +37,7 @@ export default (el) => {
                 ${type !== HEADLINES_TYPE
                     ? html`<a class="show-msg-author-modal" @click=${showUserDetailsModal}>${avatar}</a>`
                     : ""}
-                <div class="chatbox-title__text" title="${jid}" role="heading" aria-level="2">
+                <div class="chatbox-title__text" title="${display_name}" role="heading" aria-level="2">
                     ${type !== HEADLINES_TYPE
                         ? html`<a class="user show-msg-author-modal" @click=${showUserDetailsModal}>${display_name}</a>`
                         : display_name}
