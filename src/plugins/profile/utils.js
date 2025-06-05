@@ -10,7 +10,7 @@ export function getPrettyStatus(stat) {
     } else if (stat === 'dnd') {
         return __('busy');
     } else if (stat === 'xa') {
-        return __('away for long');
+        return 'offline';
     } else if (stat === 'away') {
         return __('away');
     } else if (stat === 'offline') {

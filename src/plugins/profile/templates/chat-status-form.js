@@ -5,11 +5,11 @@ import { __ } from 'i18n';
  * @param {import('../modals/profile').default} el
  */
 export default (el) => {
-    const i18n_away = __('Away');
+    const i18n_away = 'Appear away';
     const i18n_busy = __('Busy');
     const i18n_online = __('Online');
     const i18n_save = __('Set status');
-    const i18n_xa = __('Away for long');
+    const i18n_xa = 'Appear offline';
     const placeholder_status_message = __('Personal status message');
     const status = el.model.get('show') || el.model.get('presence');
     const status_message = el.model.get('status_message');
