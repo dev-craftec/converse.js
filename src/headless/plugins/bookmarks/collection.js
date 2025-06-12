@@ -123,7 +123,7 @@ class Bookmarks extends Collection {
             send_stanza = true;
         }
         if (send_stanza) {
-            this.sendBookmarkStanza(bookmark).catch((iq) => this.onBookmarkError(iq, attrs));
+            this.sendBookmarkStanza(bookmark).catch((iq) => this.onBookmarkError(iq));
         }
     }
 
@@ -173,9 +173,10 @@ class Bookmarks extends Collection {
         const node = (await api.disco.supports(`${Strophe.NS.BOOKMARKS2}#compat`, bare_jid))
             ? Strophe.NS.BOOKMARKS2
             : Strophe.NS.BOOKMARKS;
+        const supports_max = await api.disco.supports(`${Strophe.NS.PUBSUB}#config-node-max`, bare_jid);
         return api.pubsub.publish(null, node, this.getPublishedItems(node, bookmark), {
             persist_items: true,
-            max_items: 'max',
+            max_items: supports_max ? 'max' : 9999,
             send_last_published_item: 'never',
             access_model: 'whitelist',
         });
@@ -183,12 +184,10 @@ class Bookmarks extends Collection {
 
     /**
      * @param {Element} iq
-     * @param {import('./types').BookmarkAttrs} attrs
      */
-    onBookmarkError(iq, attrs) {
+    onBookmarkError(iq) {
         log.error('Error while trying to add bookmark');
         log.error(iq);
-        this.get(attrs.jid)?.destroy();
     }
 
     /**

@@ -1,6 +1,6 @@
 {
   "name": "@converse/headless",
-  "version": "11.0.0",
+  "version": "11.0.1",
   "description": "Converse.js Headless build",
   "author": "JC Brand <jc@opkode.com>",
   "contributors": [
@@ -69,7 +69,7 @@
     "pluggable.js": "3.0.1",
     "sizzle": "^2.3.5",
     "sprintf-js": "^1.1.2",
-    "strophe.js": "3.1.1"
+    "strophe.js": "4.0.0-rc0"
   },
   "devDependencies": {}
 }
