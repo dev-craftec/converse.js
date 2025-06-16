@@ -91,7 +91,7 @@ export default (el) => {
                                         name="${b.get('jid')}"
                                     />
                                     <label class="form-check-label w-100" for="blocklist-${b.get('jid')}">
-                                        ${b.get('jid')}
+                                        ${window.jidToName(b.get('jid'))}
                                     </label>
                                 </div>
                             </li>`
