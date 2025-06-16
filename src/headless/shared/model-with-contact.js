@@ -17,6 +17,7 @@ export default function ModelWithContact(BaseModel) {
         initialize() {
             super.initialize();
             this.rosterContactAdded = getOpenPromise();
+            this.onClosedChanged = () => this.setModelContact(this.get('jid'));
             /**
              * @public
              * @type {RosterContact|Profile}
@@ -24,11 +25,18 @@ export default function ModelWithContact(BaseModel) {
             this.contact = null;
         }
 
+
         /**
          * @param {string} jid
          */
         async setModelContact(jid) {
             if (this.contact?.get('jid') === jid) return;
+
+            if (this.get('closed')) {
+                this.off('change:closed', this.onClosedChanged);
+                this.on('change:closed', this.onClosedChanged);
+                return;
+            }
 
             const { session, state } = _converse;
 
@@ -63,10 +71,11 @@ export default function ModelWithContact(BaseModel) {
 
                 this.listenTo(this.contact, 'destroy', () => {
                     delete this.contact;
+                    this.trigger('contact:destroy');
                 });
 
                 this.rosterContactAdded.resolve();
-                this.trigger('contactAdded', this.contact);
+                this.trigger('contact:add', this.contact);
             }
         }
     };
