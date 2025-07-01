@@ -28,8 +28,6 @@ export default (el) => {
         ></converse-avatar
     ></span>`;
 
-    console.log(el.model, display_name);
-
     return html`
         <div class="chatbox-title ${status ? "" : "chatbox-title--no-desc"}">
             <div class="chatbox-title--row">
