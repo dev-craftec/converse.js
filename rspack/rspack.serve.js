@@ -8,14 +8,18 @@ module.exports = merge(common, {
         'converse': path.resolve(__dirname, '../src/entry.js'),
     },
     devtool: 'inline-source-map',
+    optimization: {
+        minimize: false,
+    },
     devServer: {
         static: {
             directory: path.resolve(__dirname, '../'),
         },
-        port: 3003,
+        port: 8008,
         allowedHosts: ['localhost'],
         devMiddleware: {
             publicPath: '/dist/',
+            writeToDisk: true,
         },
     },
     watchOptions: {
