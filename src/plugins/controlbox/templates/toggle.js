@@ -33,7 +33,7 @@ export default (el) => {
                 ></image>
               </svg>
             </span>
-            <span>${__('Chat')}</span>
+            <span>${__('Messaging')}</span>
         </span>
     </button>`;
 };
