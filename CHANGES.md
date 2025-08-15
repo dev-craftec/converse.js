@@ -1,13 +1,19 @@
 # Changelog
 
-## 11.0.2 (Unreleased)
+## 12.0.0 (Unreleased)
 
+- #3581: src/i18n/converse.pot changes after make dist making git archive dirty
 - #3700: Fix exception that occurs when optional cp attribute is missing
-- #3730 QR Code is not valid
+- #3730: QR Code doesn't work on dark backgrounds
+- #3769: Don't restrict OMEMO PEP push messages to type `headline`
+- #3791: Fetching pubsub node configuration fails
+- #3792: Node reconfiguration attempt uses incorrect field names
 - Add approval banner in chats with requesting contacts or unsaved contacts
 - Some fixes regarding manually resized chats in `overlayed` view mode.
 - Replace webpack with [rspack](https://rspack.rs)
 - Registration: Use https://providers.xmpp.net instead of https://compliance.conversations.im
+- Create ESM builds of converse.js and converse-headless.js
+- Set up a test runner for @converse/headless so that the headless tests use the headless build
 
 ## 11.0.1 (2025-06-09)
 

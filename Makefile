@@ -67,13 +67,11 @@ certs:
 
 GETTEXT = $(XGETTEXT) --from-code=UTF-8 --language=JavaScript --keyword=__ --keyword=___ --keyword=i18n_ --force-po --output=src/i18n/converse.pot --package-name=Converse.js --copyright-holder="Jan-Carel Brand" --package-version=11.0.1 dist/converse-no-dependencies.js -c
 
-src/i18n/converse.pot: dist/converse-no-dependencies.js
+.PHONY: pot
+pot: dist/converse-no-dependencies.js
 	$(GETTEXT) 2>&1 > /dev/null; exit $$?;
 	rm dist/converse-no-dependencies.js
 	rm dist/tmp.css
-
-.PHONY: pot
-pot: src/i18n/converse.pot
 
 .PHONY: po
 po:
@@ -242,10 +240,15 @@ eslint: node_modules
 	npm run lint
 
 .PHONY: check
-check: eslint | dist/converse.js dist/converse.css
+check: eslint | src/headless/dist/converse-headless.js dist/converse.js dist/converse.css
 	npm run types
 	make check-git-clean
-	npm run test -- $(ARGS)
+	cd src/headless && npm run test -- --single-run
+	npm run test -- --single-run
+
+.PHONY: test-headless
+test-headless:
+	cd src/headless && npm run test -- $(ARGS)
 
 .PHONY: test
 test:
