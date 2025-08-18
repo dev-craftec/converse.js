@@ -87,8 +87,9 @@ class ChatBox extends ModelWithVCard(ModelWithMessages(ModelWithContact(ColorAwa
         const attrs = /** @type {MessageAttributes} */ (attrs_or_error);
 
 				if (attrs.body) {
-					const linkMatches = attrs.body?.match(/^(((https|http)?:\/\/)|(www\.)?)([A-Za-z0-9-_]+)\.([A-Za-z0-9]+)\S*[^\s.;,(){}<>]/);
-					if (linkMatches?.length > 0) {
+					const linkRegex = /((https?:\/\/)|(www\.)?)([A-Za-z0-9-]+)\.[A-Za-z0-9]+\S*[^\s.;,(){}<>]/;
+					const linkMatches = attrs.body.match(linkRegex);
+					if (linkMatches) {
 						const linkMatch = linkMatches[0];
 						const result = await fetch(`/api/embed?url=${encodeURIComponent(linkMatch)}`, {
 							method: 'GET',
@@ -105,8 +106,8 @@ class ChatBox extends ModelWithVCard(ModelWithMessages(ModelWithContact(ColorAwa
 									'og:url': json.url,
 									...(json.title && { 'og:title': json.title, 'og:site_name': json.title }),
 									...(json.thumbnails?.[0] && { 'og:image': json.thumbnails[0] }),
-									...(json.description && { 'og:description': json.description })
-								}
+									...(json.description && { 'og:description': json.description }),
+								},
 							];
 						}
 					}

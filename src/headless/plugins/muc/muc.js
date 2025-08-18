@@ -2415,8 +2415,9 @@ class MUC extends ModelWithVCard(ModelWithMessages(ColorAwareModel(ChatBoxBase))
         }
 
 				if (attrs.body) {
-					const linkMatches = attrs.body?.match(/^(((https|http)?:\/\/)|(www\.)?)([A-Za-z0-9-_]+)\.([A-Za-z0-9]+)\S*[^\s.;,(){}<>]/);
-					if (linkMatches?.length > 0) {
+					const linkRegex = /((https?:\/\/)|(www\.)?)([A-Za-z0-9-]+)\.[A-Za-z0-9]+\S*[^\s.;,(){}<>]/;
+					const linkMatches = attrs.body.match(linkRegex);
+					if (linkMatches) {
 						const linkMatch = linkMatches[0];
 						const result = await fetch(`/api/embed?url=${encodeURIComponent(linkMatch)}`, {
 							method: 'GET',
@@ -2433,8 +2434,8 @@ class MUC extends ModelWithVCard(ModelWithMessages(ColorAwareModel(ChatBoxBase))
 									'og:url': json.url,
 									...(json.title && { 'og:title': json.title, 'og:site_name': json.title }),
 									...(json.thumbnails?.[0] && { 'og:image': json.thumbnails[0] }),
-									...(json.description && { 'og:description': json.description })
-								}
+									...(json.description && { 'og:description': json.description }),
+								},
 							];
 						}
 					}
