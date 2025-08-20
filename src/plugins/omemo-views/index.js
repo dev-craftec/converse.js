@@ -30,7 +30,7 @@ converse.plugins.add('converse-omemo-views', {
     initialize() {
         api.listen.on('chatBoxViewInitialized', onChatComponentInitialized);
         api.listen.on('chatRoomViewInitialized', onChatComponentInitialized);
-        api.listen.on('getToolbarButtons', getOMEMOToolbarButton);
+        // api.listen.on('getToolbarButtons', getOMEMOToolbarButton);
         api.listen.on('afterMessageBodyTransformed', handleEncryptedFiles);
 
         api.listen.on('userDetailsModalInitialized', (contact) => {
