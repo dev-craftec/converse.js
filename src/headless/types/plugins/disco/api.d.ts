@@ -80,6 +80,15 @@ declare namespace _default {
         export function items(jid: string, node?: string): Promise<any>;
         export namespace entities {
             /**
+             * Finds the first entity advertising a given feature.
+             *
+             * @method api.disco.entities.find
+             * @param {string} feature The feature var to search for.
+             * @param {string} [jid] The entity JID whose subtree to search. If omitted, own bare JID and domain are queried.
+             * @returns {Promise<DiscoEntity[]>} An array of matching DiscoEntity instances.
+             */
+            function find(feature: string, jid?: string): Promise<import("./entity").default[]>;
+            /**
              * Get the corresponding `DiscoEntity` instance.
              *
              * @method api.disco.entities.get
@@ -90,13 +99,14 @@ declare namespace _default {
              */
             function get(jid: string, create?: boolean): Promise<import("./entity").default | import("./entities").default | undefined>;
             /**
-             * Return any disco items advertised on this entity
+             * Return the disco items advertised on this entity
              *
              * @method api.disco.entities.items
              * @param {string} jid - The Jabber ID of the entity for which we want to fetch items
+             * @returns {Promise<DiscoEntity[]>}
              * @example api.disco.entities.items(jid);
              */
-            function items(jid: string): Promise<any>;
+            function items(jid: string): Promise<import("./entity").default[]>;
             /**
              * Create a new  disco entity. It's identity and features
              * will automatically be fetched from cache or from the
