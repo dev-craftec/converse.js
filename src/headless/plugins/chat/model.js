@@ -86,32 +86,16 @@ class ChatBox extends ModelWithVCard(ModelWithMessages(ModelWithContact(ColorAwa
 
         const attrs = /** @type {MessageAttributes} */ (attrs_or_error);
 
-				if (attrs.body) {
-					const linkRegex = /((https?:\/\/)|(www\.)?)([A-Za-z0-9-]+)\.[A-Za-z0-9]+\S*[^\s.;,(){}<>]/;
-					const linkMatches = attrs.body.match(linkRegex);
-					if (linkMatches) {
-						const linkMatch = linkMatches[0];
-						const result = await fetch(`/api/embed?url=${encodeURIComponent(linkMatch)}`, {
-							method: 'GET',
-							headers: {
-								'Accept': 'application/json',
-								'Content-Type': 'application/json',
-							},
-						});
-						const json = await result.json();
-						if (json?.status === 200 && json?.url) {
-							attrs.ogp_metadata = [
-								{
-									'og:type': 'website',
-									'og:url': json.url,
-									...(json.title && { 'og:title': json.title, 'og:site_name': json.title }),
-									...(json.thumbnails?.[0] && { 'og:image': json.thumbnails[0] }),
-									...(json.description && { 'og:description': json.description }),
-								},
-							];
-						}
-					}
-				}
+        if (attrs.body) {
+          const ogpMetadata = await window.getOGPMetadata(attrs.body);
+          if (ogpMetadata){
+            attrs.ogp_metadata = [ogpMetadata];
+          } else {
+            attrs.ogp_metadata = [];
+          }
+        } else {
+          attrs.ogp_metadata = [];
+        }
 
 				const message = this.getDuplicateMessage(attrs);
         if (message) {

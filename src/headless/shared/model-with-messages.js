@@ -282,6 +282,18 @@ export default function ModelWithMessages(BaseModel) {
             }
 
             attrs = await this.getOutgoingMessageAttributes(attrs);
+
+            if (attrs.body) {
+              const ogpMetadata = await window.getOGPMetadata(attrs.body);
+              if (ogpMetadata){
+                attrs.ogp_metadata = [ogpMetadata];
+              } else {
+                attrs.ogp_metadata = [];
+              }
+            } else {
+              attrs.ogp_metadata = [];
+            }
+
             let message = this.messages.findWhere('correcting');
             if (message) {
                 const older_versions = message.get('older_versions') || {};
@@ -297,7 +309,7 @@ export default function ModelWithMessages(BaseModel) {
                         correcting: false,
                         edited: new Date().toISOString(),
                         message: attrs.body,
-                        ogp_metadata: [],
+                        ogp_metadata: attrs.ogp_metadata,
                         older_versions,
                         origin_id: u.getUniqueId(),
                         plaintext: attrs.is_encrypted ? attrs.message : undefined,
