@@ -142,13 +142,13 @@ converse.plugins.add('converse-muc', {
             '201': __('A new groupchat has been created'),
             // XXX: Note the triple underscore function and not double underscore.
             '210': ___('Your nickname has been automatically set to %1$s'),
-            '301': __('You have been banned from this groupchat'),
+            '301': __('You have been removed from this groupchat'),
             // XXX: Note the triple underscore function and not double underscore.
             '303': ___('Your nickname has been changed to %1$s'),
             '307': __('You have been kicked from this groupchat'),
-            '321': __('You have been removed from this groupchat because of an affiliation change'),
-            '322': __("You have been removed from this groupchat because it has changed to members-only and you're not a member"),
-            '332': __('You have been removed from this groupchat because the service hosting it is being shut down'),
+            '321': __('You have been removed from this groupchat'),
+            '322': __("You have been removed from this groupchat"),
+            '332': __('You have been removed from this groupchat'),
             '333': __('You have exited this groupchat due to a technical problem'),
         };
         const labels = { muc: { STATUS_CODE_MESSAGES }};
