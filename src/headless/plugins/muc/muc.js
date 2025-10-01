@@ -224,7 +224,8 @@ class MUC extends ModelWithVCard(ModelWithMessages(ColorAwareModel(ChatBoxBase))
      * @param {boolean} is_new
      */
     async constructJoinPresence(password, is_new) {
-        const maxstanzas = is_new || this.features.get('mam_enabled') ? 0 : api.settings.get('muc_history_max_stanzas');
+        const exclude_maxstanzas = is_new || this.features.get('mam_enabled');
+        const maxstanzas = exclude_maxstanzas ? 0 : api.settings.get('muc_history_max_stanzas');
         password = password || this.get('password');
 
         const { profile } = _converse.state;
@@ -236,7 +237,7 @@ class MUC extends ModelWithVCard(ModelWithMessages(ColorAwareModel(ChatBoxBase))
                       from="${api.connection.get().jid}"
                       to="${this.getRoomJIDAndNick()}">
                 <x xmlns="${Strophe.NS.MUC}">
-                    <history maxstanzas="${maxstanzas}"/>
+                    <history maxstanzas="${maxstanzas || 0}"/>
                     ${password ? stx`<password>${password}</password>` : ''}
                 </x>
                 ${PRES_SHOW_VALUES.includes(show) ? stx`<show>${show}</show>` : ''}
@@ -1311,7 +1312,7 @@ class MUC extends ModelWithVCard(ModelWithMessages(ColorAwareModel(ChatBoxBase))
 
     /**
      * Use converse-disco to populate the features {@link Model} which
-     * is stored as an attibute on this {@link MUC}.
+     * is stored as an attribute on this {@link MUC}.
      * The results may be cached. If you want to force fetching the features from the
      * server, call {@link MUC#refreshDiscoInfo} instead.
      * @returns {Promise}
@@ -1588,7 +1589,7 @@ class MUC extends ModelWithVCard(ModelWithMessages(ColorAwareModel(ChatBoxBase))
      * @param {MUCOccupant} occupant
      * @param {string} role
      * @param {string} reason
-     * @param {function} onSuccess - callback for a succesful response
+     * @param {function} onSuccess - callback for a successful response
      * @param {function} onError - callback for an error response
      */
     setRole(occupant, role, reason, onSuccess, onError) {
@@ -2078,7 +2079,7 @@ class MUC extends ModelWithVCard(ModelWithMessages(ColorAwareModel(ChatBoxBase))
 
     /**
      * Sends a status update presence (i.e. based on the `<show>` element)
-     * @param {import("../status/types").presence_attrs} attrs
+     * @param {import("../status/types").PresenceAttrs} attrs
      * @param {Element[]|Builder[]|Element|Builder} [child_nodes]
      *  Nodes(s) to be added as child nodes of the `presence` XML element.
      */
@@ -2597,7 +2598,7 @@ class MUC extends ModelWithVCard(ModelWithMessages(ColorAwareModel(ChatBoxBase))
                 !['owner', 'admin'].includes(occupant.get('affiliation')) &&
                 isInfoVisible(converse.MUC_ROLE_CHANGES.OP)
             ) {
-                // Oly show this message if the user isn't already
+                // Only show this message if the user isn't already
                 // an admin or owner, otherwise this isn't new information.
                 this.updateNotifications(occupant.get('nick'), converse.MUC_ROLE_CHANGES.OP);
             }

@@ -558,7 +558,7 @@ declare class MUC extends MUC_base {
     getDiscoInfoFields(): Promise<any>;
     /**
      * Use converse-disco to populate the features {@link Model} which
-     * is stored as an attibute on this {@link MUC}.
+     * is stored as an attribute on this {@link MUC}.
      * The results may be cached. If you want to force fetching the features from the
      * server, call {@link MUC#refreshDiscoInfo} instead.
      * @returns {Promise}
@@ -625,7 +625,7 @@ declare class MUC extends MUC_base {
      * @param {MUCOccupant} occupant
      * @param {string} role
      * @param {string} reason
-     * @param {function} onSuccess - callback for a succesful response
+     * @param {function} onSuccess - callback for a successful response
      * @param {function} onError - callback for an error response
      */
     setRole(occupant: import("./occupant.js").default, role: string, reason: string, onSuccess: Function, onError: Function): any;
@@ -770,11 +770,11 @@ declare class MUC extends MUC_base {
     isJoined(): Promise<boolean>;
     /**
      * Sends a status update presence (i.e. based on the `<show>` element)
-     * @param {import("../status/types").presence_attrs} attrs
+     * @param {import("../status/types").PresenceAttrs} attrs
      * @param {Element[]|Builder[]|Element|Builder} [child_nodes]
      *  Nodes(s) to be added as child nodes of the `presence` XML element.
      */
-    sendStatusPresence(attrs: import("../status/types").presence_attrs, child_nodes?: Element[] | import("strophe.js").Builder[] | Element | import("strophe.js").Builder): Promise<void>;
+    sendStatusPresence(attrs: import("../status/types").PresenceAttrs, child_nodes?: Element[] | import("strophe.js").Builder[] | Element | import("strophe.js").Builder): Promise<void>;
     /**
      * Check whether we're still joined and re-join if not
      */
