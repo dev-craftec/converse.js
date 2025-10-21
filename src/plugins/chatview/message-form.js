@@ -36,8 +36,9 @@ export default class MessageForm extends CustomElement {
         });
 
         this.handleEmojiSelection = (/** @type { CustomEvent } */ { detail }) => {
+            const emojis = u.shortnamesToEmojis(detail.value);
             if (this.model.get('jid') === detail.jid) {
-                this.insertIntoTextArea(detail.value, detail.autocompleting, detail.ac_position);
+                this.insertIntoTextArea(emojis.length > 0 ? emojis[0] : detail.value, detail.autocompleting, detail.ac_position);
             }
         };
         document.addEventListener('emojiSelected', this.handleEmojiSelection);

@@ -77,7 +77,7 @@ function skintone_emoji (o, skintone, skintone_emoji) {
  * @param {Object} o
  */
 export function tplEmojiPicker (el, o) {
-    const i18n_search = __('Search');
+    const i18n_search = __('Search...');
     const skintones = {
         "tone1": ":raised_hand_tone1:",
         "tone2": ":raised_hand_tone2:",
