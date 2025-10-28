@@ -27,9 +27,9 @@ export default (el) => {
               >
                 <image 
                   preserveAspectRatio="xMidYMid meet" 
-                       width="32" 
-                       height="32" 
-                       href="${avatarUrl}"
+                  width="32" 
+                  height="32" 
+                  href="${avatarUrl}"
                 ></image>
               </svg>
             </span>
