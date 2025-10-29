@@ -6,10 +6,7 @@ import { showControlBox } from '../utils.js';
  * @param {import('../toggle').default} el
  */
 export default (el) => {
-    let avatarUrl = null;
-    if (localStorage.getItem('conversejs-session-jid')) {
-        avatarUrl = localStorage.getItem('conversejs-avatar');
-    }
+    let avatarUrl = localStorage.getItem('conversejs-avatar');
 
     return html`<button
         type="button"
