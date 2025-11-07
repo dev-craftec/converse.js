@@ -5,7 +5,7 @@ import { __ } from 'i18n';
  * @param {import('../view').default} el
  */
 export default (el) => {
-    const chats = el.model.where({'hidden': true});
+    const chats = el.model.where({'hidden': true}).filter((m) => m.get('type') !== 'chatroom');
     const num_unread = chats.reduce((acc, chat) => (acc + chat.get('num_unread')), 0);
     const num_minimized = chats.reduce((acc, chat) => (acc + (chat.get('hidden') ? 1 : 0)), 0);
     const collapsed = el.minchats.get('collapsed');
