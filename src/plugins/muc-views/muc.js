@@ -19,7 +19,8 @@ export default class MUCView extends DragResizable(BaseChatView) {
         document.addEventListener('visibilitychange', () => this.onWindowStateChanged());
 
         this.onConnectionStatusChanged();
-        this.model.maybeShow();
+        // Don't show the chat when converse.js loads
+        // this.model.maybeShow();
         /**
          * Triggered once a {@link MUCView} has been opened
          * @event _converse#chatRoomViewInitialized
