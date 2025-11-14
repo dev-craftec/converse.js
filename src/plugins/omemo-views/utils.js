@@ -237,15 +237,13 @@ function toggleOMEMO(ev) {
         if (toolbar_el.model.get('type') === CHATROOMS_TYPE) {
             messages = [
                 __(
-                    'Cannot use end-to-end encryption in this groupchat, ' +
-                        'either the groupchat has some anonymity or not all participants support OMEMO.'
+                    'Cannot currently use end-to-end encryption in this groupchat.'
                 ),
             ];
         } else {
             messages = [
                 __(
-                    "Cannot use end-to-end encryption because %1$s uses a client that doesn't support OMEMO.",
-                    toolbar_el.model.contact.getDisplayName()
+                    'Cannot currently use end-to-end encryption'
                 ),
             ];
         }
