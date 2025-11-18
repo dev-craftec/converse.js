@@ -127,7 +127,8 @@ export default (el) => {
     const rooms = el.getRoomsToShow();
     const i18n_desc_rooms = __('Click to toggle the list of open groupchats');
     const i18n_heading_chatrooms = __('Groupchats');
-    const i18n_title_list_rooms = __('Query server');
+    const i18n_title_list_rooms = __('View groupchats');
+    const title_manage_rooms = 'Manage groupchats';
     const i18n_title_new_room = __('Add groupchat');
     const i18n_show_bookmarks = __('Bookmarks');
     const is_closed = el.model.get('toggle_state') === CLOSED;
@@ -140,6 +141,12 @@ export default (el) => {
                     <converse-icon class="fa fa-plus" size="1em"></converse-icon>
                     ${i18n_title_new_room}
         </a>`,
+        window.manageGroupChats ? html`<a class="dropdown-item" role="button"
+                @click="${() => window.manageGroupChats()}"
+             >
+                 <converse-icon class="fa fa-cog" size="1em"></converse-icon>
+                 ${title_manage_rooms}
+        </a>` : null,
         html`<a class="dropdown-item show-list-muc-modal" role="button"
                 @click="${(ev) => api.modal.show('converse-muc-list-modal', { 'model': el.model }, ev)}"
                 data-toggle="modal"
@@ -153,7 +160,7 @@ export default (el) => {
                     <converse-icon class="fa fa-bookmark" size="1em"></converse-icon>
                     ${i18n_show_bookmarks}
         </a>`,
-    ];
+    ].filter(Boolean);
 
     return html`
         <div class="d-flex controlbox-padded">
